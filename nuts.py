@@ -11,6 +11,13 @@ def tweet(string,tweet_id):
     except:
         tweet(string+"!",tweet_id)
 
+def update(_id,tweet_user,message,reply):
+    tweet_user = msg['user']['screen_name']     
+    string = "@"+ tweet_user + " " + message
+    tweet(string,_id)
+    tw.favorites.create(_id=_id)
+    print(tweet_user+": "+reply)
+
 config = configparser.ConfigParser()
 config.read('nuts.ini')
 oauth_config = config['oauth']
@@ -44,11 +51,11 @@ try:
     for msg in tw_us.user():
         if "text" in msg:
             tweet_user = msg['user']['screen_name'] 
-            if (msg['text'].startswith("@"+my_name) or msg['text'].count(message)) and tweet_user != my_name :
-                string = "@"+ tweet_user + " " + message
-                tweet(string,msg['id'])
-                tw.favorites.create(_id=msg['id'])
-                print(tweet_user+": "+msg['text'])
+            if tweet_user != my_name and not(msg['text'].startswith("RT")):
+                if msg['text'].startswith("@"+my_name) or msg['text'].count(message):
+                    update(msg['id'],tweet_user,message,msg['text'])
+                elif msg['id'] % 100 == 0:
+                    update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
     print(my_name+": "+end_message)
