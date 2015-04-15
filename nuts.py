@@ -54,7 +54,7 @@ try:
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
                 if msg['text'].startswith("@"+my_name) or msg['text'].count(message):
                     update(msg['id'],tweet_user,message,msg['text'])
-                elif msg['id'] % 100 == 0:
+                elif msg['id'] % 256 == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
