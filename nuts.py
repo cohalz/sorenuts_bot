@@ -42,6 +42,7 @@ my_name = tw.account.settings()['screen_name']
 start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
+black_list = ["monoa22s","Thunder_Pudding"]
 
 tweet(start_message,0)
 print(my_name+": "+start_message)
@@ -53,9 +54,12 @@ try:
             tweet_user = msg['user']['screen_name'] 
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
                 if msg['text'].startswith("@"+my_name) or msg['text'].count(message):
-                    update(msg['id'],tweet_user,message,msg['text'])
-                elif msg['id'] % 100 == 0:
-                    update(msg['id'],tweet_user,message,msg['text'])
+                    if tweet_user in black_list:
+                        update(msg['id'],tweet_user,"は？",msg['text'])
+                    else:
+                        update(msg['id'],tweet_user,message,msg['text'])
+                elif msg['id'] % 256 == 0:
+                        update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
     print(my_name+": "+end_message)
