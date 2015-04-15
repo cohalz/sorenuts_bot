@@ -58,7 +58,7 @@ try:
                         update(msg['id'],tweet_user,"は？",msg['text'])
                     else:
                         update(msg['id'],tweet_user,message,msg['text'])
-                elif msg['id'] % 256 == 0:
+                elif msg['id'] % 334 == 0:
                         update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
