@@ -42,7 +42,7 @@ my_name = tw.account.settings()['screen_name']
 start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
-black_list = ["monoa22s","Thunder_Pudding"]
+black_list = ["monoa22s","Thunder_Pudding","mirai_seiten"]
 
 tweet(start_message,0)
 print(my_name+": "+start_message)
@@ -58,7 +58,7 @@ try:
                         update(msg['id'],tweet_user,"は？",msg['text'])
                     else:
                         update(msg['id'],tweet_user,message,msg['text'])
-                elif msg['id'] % 334 == 0:
+                elif msg['id'] % 300 == 0:
                         update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
