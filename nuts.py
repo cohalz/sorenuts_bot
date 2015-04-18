@@ -58,10 +58,13 @@ try:
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
                 if matchego:
                     update(msg['id'],tweet_user,message,msg['text'])
-                elif msg['text'].startswith("@"+my_name) or msg['text'].count(message):
+                elif msg['text'].startswith("@"+my_name):
                     update(msg['id'],tweet_user,message,msg['text'])
-                elif matchstr:
-                    update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
+                if msg['text'].count(message):
+                    if matchstr:
+                        update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
+                    else:
+                        update(msg['id'],tweet_user,message,msg['text'])
                 elif msg['id'] % 300 == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
 except:
