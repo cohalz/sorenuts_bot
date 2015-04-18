@@ -43,7 +43,7 @@ my_name = tw.account.settings()['screen_name']
 start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
-pettern = re.compile("@[a-zA-Z0-9]*\s")
+pettern = re.compile("@[a-zA-Z0-9_]*\s")
 egosa = re.compile(".*そ.*れ.*ナ.*ッ.*ツ.*")
 tweet(start_message,0)
 print(my_name+": "+start_message)
