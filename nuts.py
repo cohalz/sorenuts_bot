@@ -56,11 +56,12 @@ try:
             matchego = egosa.match(msg['text'])
             tweet_user = msg['user']['screen_name'] 
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
-                if msg['text'].startswith("@"+my_name) or msg['text'].count(message):
-                    if matchego:
-                        update(msg['id'],tweet_user,message,msg['text'])
-                    elif matchstr:
-                        update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
+                if matchego:
+                    update(msg['id'],tweet_user,message,msg['text'])
+                elif msg['text'].startswith("@"+my_name) or msg['text'].count(message):
+                    update(msg['id'],tweet_user,message,msg['text'])
+                elif matchstr:
+                    update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
                 elif msg['id'] % 300 == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
 except:
