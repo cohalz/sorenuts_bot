@@ -43,7 +43,7 @@ my_name = tw.account.settings()['screen_name']
 start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
-pettern = re.compile("@[a-zA-Z0-9_]*\s")
+pettern = re.compile("@[a-zA-Z0-9_]*\sそれナッツ")
 egosa = re.compile(".*そ.*れ.*ナ.*ッ.*ツ.*")
 tweet(start_message,0)
 print(my_name+": "+start_message)
@@ -60,12 +60,9 @@ try:
                     update(msg['id'],tweet_user,message,msg['text'])
                 elif msg['text'].startswith("@"+my_name):
                     update(msg['id'],tweet_user,message,msg['text'])
-                if msg['text'].count(message):
-                    if matchstr:
-                        update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
-                    else:
-                        update(msg['id'],tweet_user,message,msg['text'])
-                elif msg['id'] % 300 == 0:
+                elif matchstr:
+                    update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
+                elif msg['id'] % 600 == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
