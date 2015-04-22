@@ -38,7 +38,7 @@ tw = Twitter(
         oauth_config['consumer_secret'])
 )
 
-
+fp = open('image.log','a')
 my_name = tw.account.settings()['screen_name']
 image = [
     "https://twitter.com/yuya_b_c_d/status/587468014779367424/photo/1",
@@ -63,6 +63,7 @@ end_message="ナッツナッツ"
 pettern = re.compile("@[a-zA-Z0-9_]*\sそれナッツ")
 egosa = re.compile(".*そ.*れ.*ナ.*ッ.*ツ.*")
 tweet(start_message,0)
+linkprefix = re.compile(".*http://t.co/")
 print(my_name+": "+start_message)
 
 tw_us = TwitterStream(auth=oauth, domain='userstream.twitter.com')
@@ -71,12 +72,16 @@ try:
         if "text" in msg:
             matchstr = pettern.match(msg['text'])
             matchego = egosa.match(msg['text'])
+            matchlink = re.compile(".*http://t.co/")
             tweet_user = msg['user']['screen_name'] 
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
-                if msg['id'] % 500 == 250 or msg['text'].count("それナッツ？"):
-                    tweet(image[random.randint(0,image.length - 1)],0)
+                if msg['id'] % 700 == 250 or msg['text'].count("それナッツ？"):
+                    tweet(image[random.randint(0,len(image) - 1)],0)
+                    print(image[random.randint(0,len(image) - 1)])
                 elif msg['text'].startswith("@"+my_name):
                     update(msg['id'],tweet_user,message,msg['text'])
+                    if matchlink:
+                        fp.write(matchlink.group()+"\n")
                 elif matchstr:
                     update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
                 elif msg['id'] % 500 == 0:
@@ -87,3 +92,4 @@ try:
 except:
     tweet(end_message,0)
     print(my_name+": "+end_message)
+    fp.close()
