@@ -38,7 +38,6 @@ tw = Twitter(
         oauth_config['consumer_secret'])
 )
 
-fp = open('image.log','a')
 my_name = tw.account.settings()['screen_name']
 image = [
     "https://twitter.com/yuya_b_c_d/status/587468014779367424/photo/1",
@@ -55,6 +54,10 @@ image = [
     "https://twitter.com/sugino_souta/status/587493043873284096/photo/1",
     "https://twitter.com/kts_tdu_bot/status/587493915923591169/photo/1",
     "https://twitter.com/yuya_b_c_d/status/587954787569631232/photo/1",
+    "https://twitter.com/kirotgsche/status/590903763939897344/photo/1",
+    "https://twitter.com/sorenuts_nuts/status/590903369943756801/photo/1",
+    "https://twitter.com/sorenuts_nuts/status/590904484240314368/photo/1",
+    "https://twitter.com/sorenuts_nuts/status/590501001892798465/photo/1",
     "https://twitter.com/kirotgsche/status/587976953820360704/photo/1"
     ]
 start_message="それナッツ!"
@@ -63,7 +66,7 @@ end_message="ナッツナッツ"
 pettern = re.compile("@[a-zA-Z0-9_]*\sそれナッツ")
 egosa = re.compile(".*そ.*れ.*ナ.*ッ.*ツ.*")
 tweet(start_message,0)
-linkprefix = re.compile(".*http://t.co/")
+linkprefix = re.compile(".*http://t.co/.*")
 print(my_name+": "+start_message)
 
 tw_us = TwitterStream(auth=oauth, domain='userstream.twitter.com')
@@ -72,21 +75,22 @@ try:
         if "text" in msg:
             matchstr = pettern.match(msg['text'])
             matchego = egosa.match(msg['text'])
-            matchlink = re.compile(".*http://t.co/")
+            matchlink = linkprefix.match(msg['text'])
             tweet_user = msg['user']['screen_name'] 
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
                 if msg['id'] % 700 == 250 or msg['text'].count("それナッツ？"):
                     tweet(image[random.randint(0,len(image) - 1)],0)
-                    print(image[random.randint(0,len(image) - 1)])
+                    print(tweet_user+": "+msg['text'])
                 elif msg['text'].startswith("@"+my_name):
                     update(msg['id'],tweet_user,message,msg['text'])
                     if matchlink:
+                        fp = open('image.log','a')
                         fp.write(matchlink.group()+"\n")
+                        fp.close()
                 elif matchstr:
                     update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
                 elif msg['id'] % 500 == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
-                    # update(msg['id'],tweet_user,message,msg['text'])
                 elif matchego:
                     update(msg['id'],tweet_user,message,msg['text'])
 except:
