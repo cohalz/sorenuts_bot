@@ -40,6 +40,23 @@ tw = Twitter(
 
 
 my_name = tw.account.settings()['screen_name']
+image = [
+    "https://twitter.com/yuya_b_c_d/status/587468014779367424/photo/1",
+    "https://twitter.com/yuya_b_c_d/status/587468383827861504/photo/1",
+    "https://twitter.com/pachitamao/status/587468907402768384/photo/1",
+    "https://twitter.com/sugino_souta/status/587468974994010112/photo/1",
+    "https://twitter.com/zakosuka/status/587470532146151427/photo/1",
+    "https://twitter.com/kureha0226/status/587490861451083776/photo/1",
+    "https://twitter.com/yuya_b_c_d/status/587490950320037888/photo/1",
+    "https://twitter.com/pachitamao/status/587491294231969792/photo/1",
+    "https://twitter.com/yuya_b_c_d/status/587491331947102208/photo/1",
+    "https://twitter.com/pachitamao/status/587491654539448322/photo/1",
+    "https://twitter.com/yuya_b_c_d/status/587491674152009729/photo/1",
+    "https://twitter.com/sugino_souta/status/587493043873284096/photo/1",
+    "https://twitter.com/kts_tdu_bot/status/587493915923591169/photo/1",
+    "https://twitter.com/yuya_b_c_d/status/587954787569631232/photo/1",
+    "https://twitter.com/kirotgsche/status/587976953820360704/photo/1"
+    ]
 start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
@@ -56,13 +73,16 @@ try:
             matchego = egosa.match(msg['text'])
             tweet_user = msg['user']['screen_name'] 
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
-                if matchego:
-                    update(msg['id'],tweet_user,message,msg['text'])
+                if msg['id'] % 500 == 250 or msg['text'].count("それナッツ？"):
+                    tweet(image[random.randint(0,image.length - 1)],0)
                 elif msg['text'].startswith("@"+my_name):
                     update(msg['id'],tweet_user,message,msg['text'])
                 elif matchstr:
                     update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
-                elif msg['id'] % 600 == 0:
+                elif msg['id'] % 500 == 0:
+                    update(msg['id'],tweet_user,message,msg['text'])
+                    # update(msg['id'],tweet_user,message,msg['text'])
+                elif matchego:
                     update(msg['id'],tweet_user,message,msg['text'])
 except:
     tweet(end_message,0)
