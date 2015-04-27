@@ -67,6 +67,7 @@ pettern = re.compile("@[a-zA-Z0-9_]*\sそれナッツ")
 egosa = re.compile(".*そ.*れ.*ナ.*ッ.*ツ.*")
 tweet(start_message,0)
 linkprefix = re.compile(".*http://t.co/.*")
+prob = 800
 print(my_name+": "+start_message)
 
 tw_us = TwitterStream(auth=oauth, domain='userstream.twitter.com')
@@ -78,7 +79,7 @@ try:
             matchlink = linkprefix.match(msg['text'])
             tweet_user = msg['user']['screen_name'] 
             if tweet_user != my_name and not(msg['text'].startswith("RT")):
-                if msg['id'] % 700 == 250 or msg['text'].count("それナッツ？"):
+                if msg['id'] % prob == prob / 2 or msg['text'].count("それナッツ？"):
                     tweet(image[random.randint(0,len(image) - 1)],0)
                     print(tweet_user+": "+msg['text'])
                 elif msg['text'].startswith("@"+my_name):
@@ -88,8 +89,8 @@ try:
                         fp.write(matchlink.group()+"\n")
                         fp.close()
                 elif matchstr:
-                    update(msg['id'],tweet_user,matchstr.group()+message,msg['text'])
-                elif msg['id'] % 500 == 0:
+                    update(msg['id'],tweet_user,matchstr.group(),msg['text'])
+                elif msg['id'] % prob == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
                 elif matchego:
                     update(msg['id'],tweet_user,message,msg['text'])
