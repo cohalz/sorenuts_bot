@@ -58,13 +58,15 @@ image = [
     "https://twitter.com/sorenuts_nuts/status/590903369943756801/photo/1",
     "https://twitter.com/sorenuts_nuts/status/590904484240314368/photo/1",
     "https://twitter.com/sorenuts_nuts/status/590501001892798465/photo/1",
+    "http://t.co/GljHE6tLSU",
+    "http://t.co/zCOjIw2FSv",
     "https://twitter.com/kirotgsche/status/587976953820360704/photo/1"
     ]
 start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
 pettern = re.compile("@[a-zA-Z0-9_]*\sそれナッツ")
-egosa = re.compile(".*そ.*れ.*ナ.*ッ.*ツ.*")
+egosa = re.compile(".*(そ.*れ.*ナ.*ッ.*ツ.*)")
 tweet(start_message,0)
 linkprefix = re.compile(".*http://t.co/.*")
 prob = 800
@@ -82,18 +84,19 @@ try:
                 if msg['id'] % prob == prob / 2 or msg['text'].count("それナッツ？"):
                     tweet(image[random.randint(0,len(image) - 1)],0)
                     print(tweet_user+": "+msg['text'])
+
+                elif matchstr:
+                    update(msg['id'],tweet_user,matchstr.group(),msg['text'])
+                elif msg['id'] % prob == 0:
+                    update(msg['id'],tweet_user,message,msg['text'])
+                elif matchego:
+                    update(msg['id'],tweet_user,matchego.group(1),msg['text'])
                 elif msg['text'].startswith("@"+my_name):
                     update(msg['id'],tweet_user,message,msg['text'])
                     if matchlink:
                         fp = open('image.log','a')
                         fp.write(matchlink.group()+"\n")
                         fp.close()
-                elif matchstr:
-                    update(msg['id'],tweet_user,matchstr.group(),msg['text'])
-                elif msg['id'] % prob == 0:
-                    update(msg['id'],tweet_user,message,msg['text'])
-                elif matchego:
-                    update(msg['id'],tweet_user,matchego,msg['text'])
 except:
     tweet(end_message,0)
     print(my_name+": "+end_message)
