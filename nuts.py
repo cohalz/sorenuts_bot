@@ -66,7 +66,7 @@ start_message="それナッツ!"
 message="それナッツ"
 end_message="ナッツナッツ"
 pettern = re.compile("@[a-zA-Z0-9_]*\sそれナッツ")
-egosa = re.compile(".*(そ.*れ.*ナ.*ッ.*ツ.*)")
+egosa = re.compile(".*(そ.*れ.*ナ.*ッ.*ツ).*")
 tweet(start_message,0)
 linkprefix = re.compile(".*http://t.co/.*")
 prob = 800
