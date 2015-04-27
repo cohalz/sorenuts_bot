@@ -93,7 +93,7 @@ try:
                 elif msg['id'] % prob == 0:
                     update(msg['id'],tweet_user,message,msg['text'])
                 elif matchego:
-                    update(msg['id'],tweet_user,message,msg['text'])
+                    update(msg['id'],tweet_user,matchego,msg['text'])
 except:
     tweet(end_message,0)
     print(my_name+": "+end_message)
